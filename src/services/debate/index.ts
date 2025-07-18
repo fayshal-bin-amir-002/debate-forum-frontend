@@ -44,3 +44,24 @@ export const createDebate = async (payload: FieldValues) => {
     return Error(error);
   }
 };
+
+export const getDebateDetails = async (id: string, email?: string) => {
+  let q = `${id}`;
+  if (email) q += `/${email}`;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/debates/details/${q}`,
+      {
+        next: {
+          revalidate: 60,
+        },
+        cache: "no-store",
+      }
+    );
+    const result = await res.json();
+
+    return result;
+  } catch (error: any) {
+    return Error(error);
+  }
+};

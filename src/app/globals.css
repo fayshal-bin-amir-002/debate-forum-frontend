@@ -41,6 +41,30 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --animate-spinner-blade: spinner-blade 1s linear infinite;
+
+  @keyframes spinner-blade {
+    0% {
+      opacity: 0.85;
+    }
+    50% {
+      opacity: 0.25;
+    }
+    100% {
+      opacity: 0.25;
+    }
+  }
+  @keyframes spinner-blade {
+  0% {
+    opacity: 0.85;
+    }
+  50% {
+    opacity: 0.25;
+    }
+  100% {
+    opacity: 0.25;
+    }
+  }
 }
 
 :root {

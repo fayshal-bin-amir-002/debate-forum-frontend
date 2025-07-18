@@ -73,7 +73,7 @@ const CreateDebateForm = ({ session }: { session: IUserProps | null }) => {
       if (res?.success) {
         form.reset();
         toast.success(res?.message);
-        router.push("/debates");
+        router.push(`/debates/${res?.data?.id}`);
       } else {
         toast.error(res?.message);
       }
