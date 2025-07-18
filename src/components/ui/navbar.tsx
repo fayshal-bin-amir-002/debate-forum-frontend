@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/liquid-glass-button";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { IUserProps } from "@/types/user";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import {
   DropdownMenu,
@@ -26,6 +28,8 @@ export const Header = ({ session }: { session: IUserProps | null }) => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
 
+  const { setTheme } = useTheme();
+
   React.useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -43,7 +47,7 @@ export const Header = ({ session }: { session: IUserProps | null }) => {
           className={cn(
             "mx-auto mt-2 max-w-7xl px-4 md:px-6 lg:px-8 transition-all duration-300",
             isScrolled &&
-              "bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg mx-4"
+              "bg-background/50 max-w-4xl lg:mx-auto rounded-2xl border backdrop-blur-lg mx-4"
           )}
         >
           <div className="relative flex flex-wrap items-center justify-between gap-6 lg:gap-0 py-2">
@@ -94,63 +98,87 @@ export const Header = ({ session }: { session: IUserProps | null }) => {
                   ))}
                 </ul>
               </div>
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-2 sm:space-y-0 md:w-fit">
-                {!session ? (
-                  <>
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className={cn(isScrolled && "lg:hidden")}
-                    >
-                      <Link href="/auth">
-                        <span>Login</span>
-                      </Link>
-                    </Button>
-                    <Button
-                      asChild
-                      size="sm"
-                      className={cn(isScrolled && "lg:hidden")}
-                    >
-                      <Link href="/auth">
-                        <span>Register</span>
-                      </Link>
-                    </Button>
-                    <Button
-                      asChild
-                      size="sm"
-                      className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
-                    >
-                      <Link href="/auth">
-                        <span>Get Started</span>
-                      </Link>
-                    </Button>
-                  </>
-                ) : (
+              <div className="flex w-full flex-row items-center gap-4">
+                <div>
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="cursor-pointer">
-                      <Avatar>
-                        <AvatarImage
-                          src={
-                            session?.user?.image ||
-                            "https://github.com/shadcn.png"
-                          }
-                        />
-                        <AvatarFallback>CN</AvatarFallback>
-                      </Avatar>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="icon">
+                        <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                        <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                        <span className="sr-only">Toggle theme</span>
+                      </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuLabel className="flex flex-col gap-0.5">
-                        <small>{session?.user?.name}</small>
-                        <small>{session?.user?.email}</small>
-                      </DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => signOut()}>
-                        <LogOut /> Log Out
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setTheme("light")}>
+                        Light
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setTheme("dark")}>
+                        Dark
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setTheme("system")}>
+                        System
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                )}
+                </div>
+                <div className="flex items-center justify-center">
+                  {!session ? (
+                    <>
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className={cn(isScrolled && "lg:hidden")}
+                      >
+                        <Link href="/auth">
+                          <span>Login</span>
+                        </Link>
+                      </Button>
+                      <Button
+                        asChild
+                        size="sm"
+                        className={cn(isScrolled && "lg:hidden")}
+                      >
+                        <Link href="/auth">
+                          <span>Register</span>
+                        </Link>
+                      </Button>
+                      <Button
+                        asChild
+                        size="sm"
+                        className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
+                      >
+                        <Link href="/auth">
+                          <span>Get Started</span>
+                        </Link>
+                      </Button>
+                    </>
+                  ) : (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="cursor-pointer">
+                        <Avatar>
+                          <AvatarImage
+                            src={
+                              session?.user?.image ||
+                              "https://github.com/shadcn.png"
+                            }
+                          />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="h-auto">
+                        <DropdownMenuLabel className="flex flex-col gap-0.5">
+                          <small>{session?.user?.name}</small>
+                          <small>{session?.user?.email}</small>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => signOut()}>
+                          <LogOut /> Log Out
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+                </div>
               </div>
             </div>
           </div>
