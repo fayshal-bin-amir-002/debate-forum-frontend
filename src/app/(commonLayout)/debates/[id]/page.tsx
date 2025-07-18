@@ -13,7 +13,7 @@ const DebateDetailsPage = async ({
 
   return (
     <Container>
-      <div className="my-8 md:my-10 lg:my-12">
+      <div className="mt-8 md:mt-10 lg:mt-12">
         <DebateManagement id={id} session={session} />
       </div>
     </Container>

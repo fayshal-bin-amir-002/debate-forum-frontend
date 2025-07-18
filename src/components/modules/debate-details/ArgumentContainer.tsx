@@ -1,23 +1,69 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { DebateHeader } from "./DebateHeader";
 import { ArgumentCard } from "./ArgumentCard";
 import { DebateInput } from "./DebateInput";
 import { DebateDetailsRunning } from "@/types/debate";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useState } from "react";
+import { IUserProps } from "@/types/user";
+import { joinDebate, postArguement } from "@/services/debate";
+import { toast } from "sonner";
 
-const ArgumentContainer = ({ data }: { data: DebateDetailsRunning }) => {
+const ArgumentContainer = ({
+  data,
+  session,
+  refetch,
+}: {
+  data: DebateDetailsRunning;
+  session: IUserProps | null;
+  refetch: () => Promise<void>;
+}) => {
+  const [open, setOpen] = useState(false);
+  const handleJoinDebate = async (side: string) => {
+    const payload = {
+      debateId: data?.debateId,
+      side,
+      email: session?.user?.email,
+    };
+    try {
+      const res = await joinDebate(payload);
+      await refetch();
+      toast.success(res?.message);
+    } catch (err: any) {
+      toast.error(err?.message || "Could not join!");
+    } finally {
+      setOpen(false);
+    }
+  };
+
+  const handlePostArgument = async (content: string) => {
+    const payload = {
+      content,
+      debateId: data?.debateId,
+      side: data?.mySide,
+      userEmail: session?.user?.email,
+    };
+    try {
+      const res = await postArguement(payload);
+      await refetch();
+      toast.success(res?.message);
+    } catch (err: any) {
+      toast.error(err?.message || "Could not join!");
+    }
+  };
+
   return (
     <div
       className={`max-w-3xl mx-auto h-[80vh] flex flex-col gap-4 border rounded-lg p-4`}
     >
       <div className="flex-none">
-        <DebateHeader
-          endsAt={data?.endsAt}
-          debateStatus={data.debateStatus}
-          iParticipated={data.iParticipated}
-        />
+        <DebateHeader endsAt={data?.endsAt} debateStatus={data.debateStatus} />
       </div>
 
       {/* Arguments scroll */}
@@ -30,9 +76,30 @@ const ArgumentContainer = ({ data }: { data: DebateDetailsRunning }) => {
       {/* Input or Join Button */}
       <div className="flex-none pt-2 border-t">
         {data.iParticipated ? (
-          <DebateInput />
+          <DebateInput handlePostArgument={handlePostArgument} />
         ) : (
-          <Button className="w-full">Join Debate</Button>
+          <Popover onOpenChange={setOpen} open={open}>
+            <PopoverTrigger asChild>
+              <Button className="w-full">Join Debate</Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <p className="text-center mb-6 font-medium">Choose your side</p>
+              <div className="space-y-4">
+                <Button
+                  onClick={() => handleJoinDebate("Support")}
+                  className="w-full bg-green-600 hover:bg-green-500"
+                >
+                  Support
+                </Button>
+                <Button
+                  onClick={() => handleJoinDebate("Oppose")}
+                  className="w-full bg-red-600 hover:bg-red-500"
+                >
+                  Oppose
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
         )}
       </div>
     </div>

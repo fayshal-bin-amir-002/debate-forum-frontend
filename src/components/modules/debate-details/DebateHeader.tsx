@@ -3,16 +3,10 @@ import { CountdownTimer } from "./CountdownTimer"; // adjust path if needed
 
 interface Props {
   debateStatus: string;
-  iParticipated: boolean;
   endsAt: string;
 }
 
-export const DebateHeader = ({
-  debateStatus,
-  iParticipated,
-  endsAt,
-}: Props) => {
-  console.log(endsAt);
+export const DebateHeader = ({ debateStatus, endsAt }: Props) => {
   return (
     <div className="flex items-center justify-between p-4 border rounded-xl shadow-sm">
       <div className="flex items-center justify-between w-full">

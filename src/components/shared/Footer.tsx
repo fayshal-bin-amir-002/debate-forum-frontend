@@ -5,7 +5,7 @@ import Container from "./Container";
 
 export function Footer() {
   return (
-    <footer className="bg-muted/30 py-10 mt-20">
+    <footer className="bg-muted/30 py-10 mt-12 md:mt-16 lg:mt-20">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
           {/* Logo & About */}

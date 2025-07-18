@@ -4,12 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-export const DebateInput = () => {
+export const DebateInput = ({
+  handlePostArgument,
+}: {
+  handlePostArgument: (payload: string) => Promise<void>;
+}) => {
   const [value, setValue] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (value.trim()) {
-      console.log("Submitted:", value);
+      await handlePostArgument(value);
       setValue("");
     }
   };

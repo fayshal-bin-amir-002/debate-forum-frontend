@@ -12,6 +12,7 @@ export interface IDebate {
 }
 
 export type DebateDetailsRunning = {
+  debateId: string;
   debateStatus: "running";
   iParticipated: boolean;
   mySide: "Support" | "Oppose" | null;
@@ -30,6 +31,7 @@ export type DebateDetailsRunning = {
 };
 
 export type DebateDetailsClosed = {
+  debateId: string;
   debateStatus: "closed";
   iParticipated: boolean;
   mySide: "Support" | "Oppose" | null;

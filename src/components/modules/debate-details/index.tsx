@@ -18,30 +18,44 @@ interface DebateManagementProps {
 }
 
 const DebateManagement = ({ id, session }: DebateManagementProps) => {
-  // Initial state is null, better than empty object for type safety
   const [debateData, setDebateData] = useState<DebateDetails | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const ONE_MINUTE = 60 * 1000;
-    let isMounted = true;
+  const fetchDebate = async () => {
+    try {
+      setLoading(true);
+      const res = await getDebateDetails(id, session?.user?.email as string);
+      const data = res?.data;
 
-    const fetchDebate = async () => {
-      try {
-        setLoading(true);
-        const res = await getDebateDetails(id, session?.user?.email as string);
-        if (isMounted) setDebateData(res?.data ?? null);
-      } catch (error) {
-        console.error("Failed to fetch debate details:", error);
-        if (isMounted) setDebateData(null);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
+      setDebateData(data ?? null);
+    } catch (error) {
+      console.error("Failed to fetch debate details:", error);
+      setDebateData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    let intervalId: NodeJS.Timeout;
 
     fetchDebate();
 
-    const intervalId = setInterval(fetchDebate, ONE_MINUTE);
+    const shouldPoll = () => {
+      if (
+        typeof debateData === "object" &&
+        debateData &&
+        debateData.debateStatus === "running"
+      ) {
+        return new Date(debateData.endsAt) > new Date();
+      }
+      return true;
+    };
+
+    if (shouldPoll()) {
+      intervalId = setInterval(fetchDebate, 60 * 1000);
+    }
 
     return () => {
       isMounted = false;
@@ -59,17 +73,19 @@ const DebateManagement = ({ id, session }: DebateManagementProps) => {
     );
 
   if (debateData.debateStatus === "running") {
-    // Type narrowing for running debate data
     const runningData = debateData as DebateDetailsRunning;
     return (
       <div>
-        <ArgumentContainer data={runningData} />
+        <ArgumentContainer
+          data={runningData}
+          session={session}
+          refetch={fetchDebate}
+        />
       </div>
     );
   }
 
   if (debateData.debateStatus === "closed") {
-    // Type narrowing for closed debate data
     const closedData = debateData as DebateDetailsClosed;
     return (
       <div>
