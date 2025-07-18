@@ -1,21 +1,13 @@
-import Link from "next/link";
-import { Button } from "../ui/button";
+import { IUserProps } from "@/types/user";
+import { Header } from "../ui/navbar";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/authOptions";
 
-const NavBar = () => {
+const NavBar = async () => {
+  const session = await getServerSession(authOptions);
   return (
-    <nav className="w-full bg-white py-3 flex justify-between items-center border-b">
-      <Link
-        href="/"
-        className="text-2xl md:text-3xl font-bold text-gray-900 cursor-pointer"
-      >
-        Debate Forum
-      </Link>
-
-      <div>
-        <Link href="/auth">
-          <Button variant="outline">Login</Button>
-        </Link>
-      </div>
+    <nav className="w-full h-14">
+      <Header session={session} />
     </nav>
   );
 };

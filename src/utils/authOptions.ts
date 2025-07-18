@@ -90,11 +90,9 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  // ✅ Custom Sign In Page
   pages: {
-    signIn: "/auth", // your login page route
+    signIn: "/auth",
   },
 
-  // ✅ Secure Secret
-  secret: process.env.NEXTAUTH_SECRET as string,
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET as string,
 };

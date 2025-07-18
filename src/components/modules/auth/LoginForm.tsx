@@ -18,7 +18,6 @@ import { PasswordInput } from "@/components/ui/PasswordInput";
 import ButtonLoader from "@/components/shared/Loader/ButtonLoader";
 import { GoogleIcon } from "@/assets/GoogleIcon";
 import { signIn } from "next-auth/react";
-import { loginUser } from "@/services/auth";
 
 const formSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address." }),
@@ -46,6 +45,7 @@ const LoginForm = () => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
     try {
       const res = await signIn("credentials", {
         email: values.email,
