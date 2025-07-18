@@ -1,14 +1,17 @@
-import Container from "@/components/shared/Container";
+import { Footer } from "@/components/shared/Footer";
 import NavBar from "@/components/shared/NavBar";
 
 import { ReactNode } from "react";
 
 const CommonLayout = async ({ children }: { children: ReactNode }) => {
   return (
-    <Container>
-      <NavBar />
-      <main className="h-[1000px]">{children}</main>
-    </Container>
+    <>
+      <div className="flex flex-col min-h-screen">
+        <NavBar />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </div>
+    </>
   );
 };
 
