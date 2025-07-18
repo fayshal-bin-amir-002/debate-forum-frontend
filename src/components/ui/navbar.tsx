@@ -123,12 +123,12 @@ export const Header = ({ session }: { session: IUserProps | null }) => {
                 </div>
                 <div className="flex items-center justify-center">
                   {!session ? (
-                    <>
+                    <div className="space-x-4">
                       <Button
                         asChild
                         variant="outline"
                         size="sm"
-                        className={cn(isScrolled && "lg:hidden")}
+                        className={cn(isScrolled && "hidden")}
                       >
                         <Link href="/auth">
                           <span>Login</span>
@@ -137,7 +137,7 @@ export const Header = ({ session }: { session: IUserProps | null }) => {
                       <Button
                         asChild
                         size="sm"
-                        className={cn(isScrolled && "lg:hidden")}
+                        className={cn(isScrolled && "hidden")}
                       >
                         <Link href="/auth">
                           <span>Register</span>
@@ -152,7 +152,7 @@ export const Header = ({ session }: { session: IUserProps | null }) => {
                           <span>Get Started</span>
                         </Link>
                       </Button>
-                    </>
+                    </div>
                   ) : (
                     <DropdownMenu>
                       <DropdownMenuTrigger className="cursor-pointer">

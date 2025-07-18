@@ -6,8 +6,8 @@ export const authOptions: NextAuthOptions = {
   providers: [
     // ✅ Google Provider
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_ID as string,
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET as string,
+      clientId: process.env.GOOGLE_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
     }),
 
     // ✅ Email/Password Credentials Provider
@@ -21,17 +21,14 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) return null;
 
         try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_API}/auth/login`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: credentials.email,
-                password: credentials.password,
-              }),
-            }
-          );
+          const res = await fetch(`${process.env.BASE_API}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          });
 
           const data = await res.json();
 
@@ -63,7 +60,7 @@ export const authOptions: NextAuthOptions = {
         };
 
         try {
-          await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/register`, {
+          await fetch(`${process.env.BASE_API}/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userInfo),
@@ -94,5 +91,5 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth",
   },
 
-  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET as string,
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET!,
 };
