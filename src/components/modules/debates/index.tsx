@@ -24,8 +24,8 @@ function ClientSideDebatesPage() {
 
   return (
     <div>
-      <div className="p-4 bg-gray-50 mb-6 rounded-lg shadow-md flex justify-center md:items-center md:justify-between gap-4 md:gap-8 flex-col md:flex-row">
-        <h3 className="text-lg font-semibold text-gray-700">
+      <div className="p-4 bg-gray-50 dark:bg-gray-900 mb-6 rounded-lg shadow-md flex justify-center md:items-center md:justify-between gap-4 md:gap-8 flex-col md:flex-row">
+        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-100">
           Have a topic in mind? Start a new debate!
         </h3>
         <Link href="/create-debate">
