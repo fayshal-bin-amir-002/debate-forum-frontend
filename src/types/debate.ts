@@ -1,6 +1,7 @@
 export interface IDebate {
   id: string;
   title: string;
+  description: string;
   authorName: string;
   authorEmail: string;
   authorImage: string | null;

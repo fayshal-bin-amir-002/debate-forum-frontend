@@ -1,10 +1,17 @@
+"use client";
+
 import { IDebate } from "@/types/debate";
-import Link from "next/link";
+import { useState } from "react";
+import DebateDetailsModal from "./DebateDetailsModal";
 
 const DebateCard = ({ debate }: { debate: IDebate }) => {
+  const [open, setOpen] = useState(false);
   return (
-    <Link href={`/debates/${debate?.id}`}>
-      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-5 shadow-sm hover:shadow-lg transition-shadow duration-300 cursor-pointer flex flex-col justify-between">
+    <>
+      <div
+        onClick={() => setOpen(true)}
+        className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-5 shadow-sm hover:shadow-lg transition-shadow duration-300 cursor-pointer flex flex-col justify-between"
+      >
         <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 truncate">
             {debate.title}
@@ -50,7 +57,8 @@ const DebateCard = ({ debate }: { debate: IDebate }) => {
           ))}
         </div>
       </div>
-    </Link>
+      <DebateDetailsModal open={open} setOpen={setOpen} debate={debate} />
+    </>
   );
 };
 

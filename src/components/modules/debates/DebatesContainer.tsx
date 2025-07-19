@@ -37,21 +37,25 @@ const DebatesContainer = ({ searchTerm, sortBy }: DebatesContainerProps) => {
     return () => clearInterval(intervalId);
   }, [searchTerm, sortBy]);
 
-  if (!loading && debates?.length === 0) {
+  if (debates?.length > 0) {
     return (
-      <div className="h-20 flex items-center justify-center">
-        <p>No Debates Found!</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
+        {debates?.map((debate) => (
+          <DebateCard debate={debate} key={debate.id} />
+        ))}
       </div>
     );
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
-      {loading
-        ? [1, 2, 3].map((n) => <DebateCardSkeleton key={n} />)
-        : debates?.map((debate) => (
-            <DebateCard debate={debate} key={debate.id} />
-          ))}
+      {!loading && debates?.length === 0 ? (
+        <div className="h-20 flex items-center justify-center">
+          <p>No Debates Found!</p>
+        </div>
+      ) : (
+        [1, 2, 3].map((n) => <DebateCardSkeleton key={n} />)
+      )}
     </div>
   );
 };
