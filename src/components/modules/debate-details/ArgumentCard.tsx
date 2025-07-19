@@ -15,9 +15,10 @@ interface Props {
       image: string | null;
     };
   };
+  handleVote: (payload: string) => Promise<void>;
 }
 
-export const ArgumentCard = ({ argument }: Props) => {
+export const ArgumentCard = ({ argument, handleVote }: Props) => {
   const { content, side, voteCount, user } = argument;
 
   return (
@@ -49,7 +50,11 @@ export const ArgumentCard = ({ argument }: Props) => {
 
       <div className="flex items-center justify-between mt-2">
         <p className="text-sm text-muted-foreground">Votes: {voteCount}</p>
-        <Button size="sm" variant="outline">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => handleVote(argument?.id)}
+        >
           Vote <Heart />
         </Button>
       </div>

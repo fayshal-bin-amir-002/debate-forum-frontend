@@ -39,8 +39,7 @@ const formSchema = z.object({
 
 const RegisterForm = () => {
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirectPath");
-  const router = useRouter();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,16 +63,12 @@ const RegisterForm = () => {
         const loginResult = await signIn("credentials", {
           email: res?.data?.email,
           password: values?.password,
-          redirect: false,
+          redirect: true,
+          callbackUrl: callbackUrl,
         });
 
         form.reset();
         toast.success(res?.message);
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push("/");
-        }
       } else {
         toast.error(res?.message);
       }
@@ -86,7 +81,7 @@ const RegisterForm = () => {
   async function handleGoogleRegister() {
     try {
       signIn("google", {
-        callbackUrl: `${redirect ? redirect : "/"}`,
+        callbackUrl: callbackUrl,
       });
     } catch (error: any) {
       toast.error(error?.message || "Google register failed");

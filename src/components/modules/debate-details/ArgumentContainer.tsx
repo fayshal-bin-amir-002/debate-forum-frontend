@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import { IUserProps } from "@/types/user";
-import { joinDebate, postArguement } from "@/services/debate";
+import { joinDebate, postArguement, voteArguement } from "@/services/debate";
 import { toast } from "sonner";
 
 const ArgumentContainer = ({
@@ -25,6 +25,7 @@ const ArgumentContainer = ({
   refetch: () => Promise<void>;
 }) => {
   const [open, setOpen] = useState(false);
+
   const handleJoinDebate = async (side: string) => {
     const payload = {
       debateId: data?.debateId,
@@ -52,7 +53,30 @@ const ArgumentContainer = ({
     try {
       const res = await postArguement(payload);
       await refetch();
-      toast.success(res?.message);
+      if (res?.success) {
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Could not join!");
+    }
+  };
+
+  const handleVote = async (id: string) => {
+    const payload = {
+      email: session?.user?.email,
+      argumentId: id,
+    };
+
+    try {
+      const res = await voteArguement(payload);
+      await refetch();
+      if (res?.success) {
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
+      }
     } catch (err: any) {
       toast.error(err?.message || "Could not join!");
     }
@@ -69,7 +93,7 @@ const ArgumentContainer = ({
       {/* Arguments scroll */}
       <div className="flex-1 overflow-y-auto space-y-4">
         {data?.arguments?.map((arg: any) => (
-          <ArgumentCard key={arg.id} argument={arg} />
+          <ArgumentCard key={arg.id} argument={arg} handleVote={handleVote} />
         ))}
       </div>
 

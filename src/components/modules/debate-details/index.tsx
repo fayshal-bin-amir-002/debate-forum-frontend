@@ -63,16 +63,7 @@ const DebateManagement = ({ id, session }: DebateManagementProps) => {
     };
   }, [id, session?.user?.email]);
 
-  if (loading) return <SpinLoader />;
-
-  if (!debateData)
-    return (
-      <div className="p-4 text-center text-red-600">
-        <p>No debate data found.</p>
-      </div>
-    );
-
-  if (debateData.debateStatus === "running") {
+  if (debateData && debateData.debateStatus === "running") {
     const runningData = debateData as DebateDetailsRunning;
     return (
       <div>
@@ -85,7 +76,7 @@ const DebateManagement = ({ id, session }: DebateManagementProps) => {
     );
   }
 
-  if (debateData.debateStatus === "closed") {
+  if (debateData && debateData.debateStatus === "closed") {
     const closedData = debateData as DebateDetailsClosed;
     return (
       <div>
@@ -96,7 +87,7 @@ const DebateManagement = ({ id, session }: DebateManagementProps) => {
 
   return (
     <div className="p-4 text-center">
-      <p>Unknown debate status.</p>
+      <SpinLoader />
     </div>
   );
 };

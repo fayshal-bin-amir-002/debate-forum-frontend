@@ -29,8 +29,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirectPath");
-  const router = useRouter();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,15 +49,12 @@ const LoginForm = () => {
       const res = await signIn("credentials", {
         email: values.email,
         password: values.password,
-        redirect: false,
+        redirect: true,
+        callbackUrl: callbackUrl,
       });
 
       if (res?.ok) {
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push("/");
-        }
+        toast.success(res?.status || "Login successful");
       } else {
         toast.error("Login failed. Please check credentials.");
       }
@@ -71,7 +67,7 @@ const LoginForm = () => {
   async function handleGoogleLogin() {
     try {
       signIn("google", {
-        callbackUrl: `${redirect ? redirect : "/"}`,
+        callbackUrl: callbackUrl,
       });
     } catch (error: any) {
       toast.error(error?.message || "Google login failed");
