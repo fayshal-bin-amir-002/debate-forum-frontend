@@ -20,6 +20,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut } from "next-auth/react";
 
 const menuItems = [
+  { name: "Home", href: "/" },
   { name: "Debates", href: "/debates" },
   { name: "Leader Board", href: "/leader-board" },
 ];
@@ -52,7 +53,7 @@ export const Header = ({ session }: { session: IUserProps | null }) => {
         >
           <div className="relative flex flex-wrap items-center justify-between gap-6 lg:gap-0 py-2">
             <div className="flex w-full justify-between lg:w-auto">
-              <Link href="/" aria-label="home">
+              <Link href="/">
                 <p className="font-semibold text-2xl tracking-tighter">
                   Debate <span className="text-primary">Forum</span>
                 </p>

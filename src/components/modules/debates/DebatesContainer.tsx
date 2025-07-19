@@ -16,18 +16,12 @@ const DebatesContainer = ({ searchTerm, sortBy }: DebatesContainerProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
     async function fetchDebates() {
       setLoading(true);
       const sortParam = sortBy === "all" ? "newest" : sortBy;
 
-      const query = new URLSearchParams();
-      if (searchTerm) query.append("searchTerm", searchTerm);
-      if (sortParam) query.append("sortBy", sortParam);
-
       try {
-        const res = await getAllDebates(query);
+        const res = await getAllDebates({ searchTerm, sortParam });
         setDebates(res.data);
       } catch (error) {
         console.error("Failed to fetch debates", error);
@@ -38,7 +32,7 @@ const DebatesContainer = ({ searchTerm, sortBy }: DebatesContainerProps) => {
 
     fetchDebates();
 
-    intervalId = setInterval(fetchDebates, 60000);
+    const intervalId = setInterval(fetchDebates, 60000);
 
     return () => clearInterval(intervalId);
   }, [searchTerm, sortBy]);

@@ -5,8 +5,8 @@ import { getDebateDetails } from "@/services/debate";
 import { IUserProps } from "@/types/user";
 import SpinLoader from "@/components/shared/Loader/SpinLoader";
 import ArgumentContainer from "./ArgumentContainer";
-import ScoreBoard from "./ScoreBoard";
 import { DebateDetails } from "@/types/debate";
+import { toast } from "sonner";
 
 interface DebateManagementProps {
   id: string;
@@ -15,20 +15,16 @@ interface DebateManagementProps {
 
 const DebateManagement = ({ id, session }: DebateManagementProps) => {
   const [debateData, setDebateData] = useState<DebateDetails | null>(null);
-  const [loading, setLoading] = useState(true);
 
   const fetchDebate = async () => {
     try {
-      setLoading(true);
       const res = await getDebateDetails(id, session?.user?.email as string);
       const data = res?.data;
 
       setDebateData(data ?? null);
-    } catch (error) {
-      console.error("Failed to fetch debate details:", error);
+    } catch (error: any) {
+      toast.error(error?.message);
       setDebateData(null);
-    } finally {
-      setLoading(false);
     }
   };
 

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/PasswordInput";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import ButtonLoader from "@/components/shared/Loader/ButtonLoader";
 import { GoogleIcon } from "@/assets/GoogleIcon";
 import { registerUser } from "@/services/auth";
@@ -68,13 +68,12 @@ const RegisterForm = () => {
         });
 
         form.reset();
-        toast.success(res?.message);
+        toast.success(res?.message || loginResult?.status);
       } else {
         toast.error(res?.message);
       }
     } catch (err: any) {
       toast.error(err?.message || "Something went wrong");
-      console.error(err);
     }
   }
 

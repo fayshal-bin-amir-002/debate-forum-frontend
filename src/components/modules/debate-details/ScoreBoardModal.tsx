@@ -44,7 +44,7 @@ const ScoreBoardModal = ({
 
         <div className="max-h-[400px] overflow-y-auto space-y-4">
           {scoreBoard && scoreBoard.length > 0 ? (
-            scoreBoard.map(({ name, email, image, totalVotes, side }, i) => (
+            scoreBoard.map(({ name, email, image, totalVotes, side }) => (
               <div
                 key={email}
                 className="flex items-center gap-4 p-3 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"

@@ -1,4 +1,3 @@
-import { IUserProps } from "@/types/user";
 import { Header } from "../ui/navbar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";

@@ -7,14 +7,13 @@ import { Heart, Edit } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
+import ButtonLoader from "@/components/shared/Loader/ButtonLoader";
 
 interface Props {
   session: IUserProps | null;
@@ -24,6 +23,8 @@ interface Props {
 
 export const ArgumentCard = ({ session, argument, refetch }: Props) => {
   const [updatedContent, setUpdatedContent] = useState("");
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [loadingVote, setLoadingVote] = useState(false);
   const [open, setOpen] = useState(false);
   const { content, side, voteCount, user, createdAt, id } = argument;
 
@@ -41,6 +42,8 @@ export const ArgumentCard = ({ session, argument, refetch }: Props) => {
       argumentId: id,
     };
 
+    setLoadingVote(true);
+
     try {
       const res = await voteArguement(payload);
       await refetch();
@@ -51,6 +54,8 @@ export const ArgumentCard = ({ session, argument, refetch }: Props) => {
       }
     } catch (err: any) {
       toast.error(err?.message || "Could not join!");
+    } finally {
+      setLoadingVote(false);
     }
   };
 
@@ -60,6 +65,8 @@ export const ArgumentCard = ({ session, argument, refetch }: Props) => {
       argumentId: id,
       content: updatedContent,
     };
+
+    setLoadingUpdate(true);
 
     try {
       const res = await editArguement(payload);
@@ -74,6 +81,7 @@ export const ArgumentCard = ({ session, argument, refetch }: Props) => {
     } finally {
       setUpdatedContent("");
       setOpen(false);
+      setLoadingUpdate(false);
     }
   };
 
@@ -125,21 +133,30 @@ export const ArgumentCard = ({ session, argument, refetch }: Props) => {
                     <div className="w-full">
                       <Textarea
                         id="width"
-                        defaultValue=""
+                        defaultValue={content || ""}
                         className="w-full h-32"
                         onChange={(e) => setUpdatedContent(e.target?.value)}
                       />
                     </div>
-                    <Button onClick={() => handleEdit(id)} className="mt-3">
-                      Update
+                    <Button
+                      onClick={() => handleEdit(id)}
+                      className="mt-3"
+                      disabled={loadingUpdate}
+                    >
+                      Update {loadingUpdate && <ButtonLoader />}
                     </Button>
                   </div>
                 </div>
               </PopoverContent>
             </Popover>
           )}
-          <Button size="sm" variant="outline" onClick={() => handleVote(id)}>
-            Vote <Heart />
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => handleVote(id)}
+            disabled={loadingVote}
+          >
+            Vote {loadingVote ? <ButtonLoader /> : <Heart />}
           </Button>
         </div>
       </div>

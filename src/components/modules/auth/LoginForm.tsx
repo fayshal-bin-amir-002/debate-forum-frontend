@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 import ButtonLoader from "@/components/shared/Loader/ButtonLoader";
 import { GoogleIcon } from "@/assets/GoogleIcon";
@@ -44,7 +44,6 @@ const LoginForm = () => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     try {
       const res = await signIn("credentials", {
         email: values.email,
@@ -60,7 +59,6 @@ const LoginForm = () => {
       }
     } catch (err: any) {
       toast.error(err?.message || "Something went wrong");
-      console.error(err);
     }
   }
 

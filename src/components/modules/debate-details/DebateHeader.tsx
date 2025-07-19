@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { CountdownTimer } from "./CountdownTimer"; // adjust path if needed
+import { CountdownTimer } from "./CountdownTimer";
 
 interface Props {
   debateStatus: string;

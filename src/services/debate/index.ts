@@ -3,10 +3,21 @@
 import { revalidateTag } from "next/cache";
 import { FieldValues } from "react-hook-form";
 
-export const getAllDebates = async (query: URLSearchParams) => {
+export const getAllDebates = async ({
+  searchTerm,
+  sortParam,
+}: {
+  searchTerm: string;
+  sortParam: string;
+}) => {
+  const query = new URLSearchParams();
+
+  if (searchTerm) query.append("searchTerm", searchTerm.toString());
+  if (sortParam) query.append("sortBy", sortParam.toString());
+
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/debates?${query}`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/debates?${query.toString()}`,
       {
         next: {
           tags: ["Debates"],

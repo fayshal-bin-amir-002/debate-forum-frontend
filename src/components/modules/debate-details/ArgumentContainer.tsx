@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import { IUserProps } from "@/types/user";
-import { joinDebate, postArguement, voteArguement } from "@/services/debate";
+import { joinDebate, postArguement } from "@/services/debate";
 import { toast } from "sonner";
 import { DebateDetails } from "@/types/debate";
 import ScoreBoardModal from "./ScoreBoardModal";
+import ButtonLoader from "@/components/shared/Loader/ButtonLoader";
 
 const ArgumentContainer = ({
   data,
@@ -27,13 +28,17 @@ const ArgumentContainer = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [scoreOpen, setScoreOpen] = useState(false);
+  const [loadingJoinDebate, setLoadingJoinDebate] = useState(false);
 
   const handleJoinDebate = async (side: string) => {
+    setOpen(false);
+    setLoadingJoinDebate(true);
     const payload = {
       debateId: data?.debateId,
       side,
       email: session?.user?.email,
     };
+
     try {
       const res = await joinDebate(payload);
       await refetch();
@@ -45,7 +50,7 @@ const ArgumentContainer = ({
     } catch (err: any) {
       toast.error(err?.message || "Could not join!");
     } finally {
-      setOpen(false);
+      setLoadingJoinDebate(false);
     }
   };
 
@@ -109,7 +114,9 @@ const ArgumentContainer = ({
         ) : (
           <Popover onOpenChange={setOpen} open={open}>
             <PopoverTrigger asChild>
-              <Button className="w-full">Join Debate</Button>
+              <Button className="w-full" disabled={loadingJoinDebate}>
+                Join Debate {loadingJoinDebate && <ButtonLoader />}
+              </Button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
               <p className="text-center mb-6 font-medium">Choose your side</p>

@@ -20,7 +20,7 @@ const FilterSection = ({
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchTerm(inputValue);
-    }, 500); // debounce 500ms
+    }, 500);
 
     return () => clearTimeout(handler);
   }, [inputValue, setSearchTerm]);
