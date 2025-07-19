@@ -107,7 +107,9 @@ const DebateDetailsModal: React.FC<DebateDetailsModalProps> = ({
         </div>
 
         <DialogFooter className="gap-4 md:gap-6">
-          <Button variant="outline">Close</Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Close
+          </Button>
 
           <Link href={`/debates/${debate?.id}`}>
             <Button className="w-full">Go to Debate</Button>
