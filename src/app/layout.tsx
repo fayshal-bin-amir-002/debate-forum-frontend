@@ -16,7 +16,25 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Debate Forum",
-  description: "Online debate application",
+  description:
+    "A platform to join and create online debates, express opinions, and vote on arguments.",
+  metadataBase: new URL("https://debate-forum-bay.vercel.app"),
+  openGraph: {
+    title: "Debate Forum",
+    description:
+      "Join online debates, express your thoughts, and see what others think.",
+    url: "https://debate-forum-bay.vercel.app",
+    siteName: "Debate Forum",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Debate Forum",
+    description: "Participate in online debates and share your views.",
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
