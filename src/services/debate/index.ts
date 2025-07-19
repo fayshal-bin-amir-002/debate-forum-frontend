@@ -129,3 +129,19 @@ export const voteArguement = async (payload: FieldValues) => {
     return Error(error);
   }
 };
+
+export const getLeaderBoard = async (filter: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/debates/score-board?filter=${filter}`,
+      {
+        cache: "no-store",
+      }
+    );
+    const result = await res.json();
+
+    return result;
+  } catch (error: any) {
+    return Error(error);
+  }
+};

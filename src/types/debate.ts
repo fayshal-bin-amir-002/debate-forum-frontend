@@ -45,3 +45,12 @@ export type DebateDetailsClosed = {
 };
 
 export type DebateDetails = DebateDetailsRunning | DebateDetailsClosed;
+
+export type LeaderboardUser = {
+  name: string;
+  image?: string;
+  email: string;
+  totalVotes: number;
+  debatesParticipated: number;
+  position: number;
+};

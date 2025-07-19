@@ -86,7 +86,7 @@ const DebateManagement = ({ id, session }: DebateManagementProps) => {
   }
 
   return (
-    <div className="p-4 text-center">
+    <div>
       <SpinLoader />
     </div>
   );
