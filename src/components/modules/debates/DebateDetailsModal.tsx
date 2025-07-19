@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -107,12 +106,11 @@ const DebateDetailsModal: React.FC<DebateDetailsModalProps> = ({
           </div>
         </div>
 
-        <DialogFooter className="gap-6">
-          <DialogClose asChild>
-            <Button variant="outline">Close</Button>
-          </DialogClose>
+        <DialogFooter className="gap-4 md:gap-6">
+          <Button variant="outline">Close</Button>
+
           <Link href={`/debates/${debate?.id}`}>
-            <Button>Go to Debate</Button>
+            <Button className="w-full">Go to Debate</Button>
           </Link>
         </DialogFooter>
       </DialogContent>
