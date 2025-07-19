@@ -1,25 +1,81 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { editArguement, voteArguement } from "@/services/debate";
+import { Argument } from "@/types/debate";
+import { IUserProps } from "@/types/user";
+import { Heart, Edit } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
-  argument: {
-    id: string;
-    content: string;
-    side: "Support" | "Oppose";
-    voteCount: number;
-    user: {
-      name: string;
-      email: string;
-      image: string | null;
-    };
-  };
-  handleVote: (payload: string) => Promise<void>;
+  session: IUserProps | null;
+  argument: Argument;
+  refetch: () => Promise<void>;
 }
 
-export const ArgumentCard = ({ argument, handleVote }: Props) => {
-  const { content, side, voteCount, user } = argument;
+export const ArgumentCard = ({ session, argument, refetch }: Props) => {
+  const [updatedContent, setUpdatedContent] = useState("");
+  const [open, setOpen] = useState(false);
+  const { content, side, voteCount, user, createdAt, id } = argument;
+
+  const createdAtDate = new Date(createdAt);
+  const now = new Date();
+
+  const FIVE_MINUTES = 5 * 60 * 1000;
+  const canEdit =
+    now.getTime() - createdAtDate.getTime() <= FIVE_MINUTES &&
+    session?.user?.email === argument?.user?.email;
+
+  const handleVote = async (id: string) => {
+    const payload = {
+      email: session?.user?.email,
+      argumentId: id,
+    };
+
+    try {
+      const res = await voteArguement(payload);
+      await refetch();
+      if (res?.success) {
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Could not join!");
+    }
+  };
+
+  const handleEdit = async (id: string) => {
+    const payload = {
+      userEmail: session?.user?.email,
+      argumentId: id,
+      content: updatedContent,
+    };
+
+    try {
+      const res = await editArguement(payload);
+      await refetch();
+      if (res?.success) {
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Could not join!");
+    } finally {
+      setUpdatedContent("");
+      setOpen(false);
+    }
+  };
 
   return (
     <div className="p-4 border rounded-lg shadow-sm flex flex-col gap-2">
@@ -50,13 +106,42 @@ export const ArgumentCard = ({ argument, handleVote }: Props) => {
 
       <div className="flex items-center justify-between mt-2">
         <p className="text-sm text-muted-foreground">Votes: {voteCount}</p>
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => handleVote(argument?.id)}
-        >
-          Vote <Heart />
-        </Button>
+        <div className="flex gap-2">
+          {canEdit && (
+            <Popover onOpenChange={setOpen} open={open}>
+              <PopoverTrigger asChild>
+                <Button size="sm" variant="secondary">
+                  Edit <Edit className="w-4 h-4 ml-1" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80">
+                <div className="grid gap-4">
+                  <div className="space-y-2">
+                    <h4 className="leading-none font-medium">
+                      Edit Your Arguemnt
+                    </h4>
+                  </div>
+                  <div>
+                    <div className="w-full">
+                      <Textarea
+                        id="width"
+                        defaultValue=""
+                        className="w-full h-32"
+                        onChange={(e) => setUpdatedContent(e.target?.value)}
+                      />
+                    </div>
+                    <Button onClick={() => handleEdit(id)} className="mt-3">
+                      Update
+                    </Button>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
+          <Button size="sm" variant="outline" onClick={() => handleVote(id)}>
+            Vote <Heart />
+          </Button>
+        </div>
       </div>
     </div>
   );

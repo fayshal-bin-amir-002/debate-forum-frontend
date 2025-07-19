@@ -4,13 +4,9 @@ import { useEffect, useState } from "react";
 import { getDebateDetails } from "@/services/debate";
 import { IUserProps } from "@/types/user";
 import SpinLoader from "@/components/shared/Loader/SpinLoader";
-import {
-  DebateDetails,
-  DebateDetailsRunning,
-  DebateDetailsClosed,
-} from "@/types/debate";
 import ArgumentContainer from "./ArgumentContainer";
 import ScoreBoard from "./ScoreBoard";
+import { DebateDetails } from "@/types/debate";
 
 interface DebateManagementProps {
   id: string;
@@ -63,24 +59,14 @@ const DebateManagement = ({ id, session }: DebateManagementProps) => {
     };
   }, [id, session?.user?.email]);
 
-  if (debateData && debateData.debateStatus === "running") {
-    const runningData = debateData as DebateDetailsRunning;
+  if (debateData) {
     return (
       <div>
         <ArgumentContainer
-          data={runningData}
+          data={debateData}
           session={session}
           refetch={fetchDebate}
         />
-      </div>
-    );
-  }
-
-  if (debateData && debateData.debateStatus === "closed") {
-    const closedData = debateData as DebateDetailsClosed;
-    return (
-      <div>
-        <ScoreBoard data={closedData} />
       </div>
     );
   }

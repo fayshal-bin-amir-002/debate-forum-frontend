@@ -11,40 +11,37 @@ export interface IDebate {
   status: "Running" | "Ended";
 }
 
-export type DebateDetailsRunning = {
+export type DebateDetails = {
   debateId: string;
-  debateStatus: "running";
+  debateStatus: "running" | "closed";
   iParticipated: boolean;
   mySide: "Support" | "Oppose" | null;
   endsAt: string;
-  arguments: {
-    id: string;
-    content: string;
-    side: "Support" | "Oppose";
-    voteCount: number;
-    user: {
-      name: string;
-      email: string;
-      image: string | null;
-    };
-  }[];
+  winnerSide: "Support" | "Oppose" | "Draw";
+  scoreBoard: ScoreBoard[];
+  arguments: Argument[];
 };
 
-export type DebateDetailsClosed = {
-  debateId: string;
-  debateStatus: "closed";
-  iParticipated: boolean;
-  mySide: "Support" | "Oppose" | null;
-  winnerSide: "Support" | "Oppose" | "Draw";
-  scoreBoard: {
+export type Argument = {
+  id: string;
+  content: string;
+  side: "Support" | "Oppose";
+  voteCount: number;
+  user: {
     name: string;
     email: string;
     image: string | null;
-    totalVotes: number;
-  }[];
+  };
+  createdAt: string;
 };
 
-export type DebateDetails = DebateDetailsRunning | DebateDetailsClosed;
+export type ScoreBoard = {
+  name: string;
+  email: string;
+  image: string | null;
+  totalVotes: number;
+  side: "Support" | "Oppose";
+};
 
 export type LeaderboardUser = {
   name: string;

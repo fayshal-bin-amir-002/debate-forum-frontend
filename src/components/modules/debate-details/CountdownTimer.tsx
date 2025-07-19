@@ -64,7 +64,7 @@ export const CountdownTimer = ({ endsAt }: CountdownTimerProps) => {
 
 const TimeBlock = ({ label, value }: { label: string; value: string }) => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-auto">
       <span className="text-3xl">{value}</span>
       <span className="text-xs uppercase tracking-widest">{label}</span>
     </div>

@@ -4,23 +4,37 @@ import { CountdownTimer } from "./CountdownTimer"; // adjust path if needed
 interface Props {
   debateStatus: string;
   endsAt: string;
+  winerSide?: string;
 }
 
-export const DebateHeader = ({ debateStatus, endsAt }: Props) => {
+export const DebateHeader = ({ debateStatus, endsAt, winerSide }: Props) => {
   return (
     <div className="flex items-center justify-between p-4 border rounded-xl shadow-sm">
-      <div className="flex items-center justify-between w-full">
-        <h2 className={`text-2xl font-semibold capitalize`}>
+      {winerSide ? (
+        <h3 className="text-2xl font-medium">
+          <span>Winner Side: </span>
           <span
-            className={` ${
-              debateStatus === "running" ? "text-green-600" : "text-red-600"
-            }`}
+            className={` ${winerSide === "Support" && "text-green-600"} ${
+              winerSide === "Oppose" && "text-red-600"
+            } ${winerSide === "Draw" && "text-amber-600"}`}
           >
-            {debateStatus}
+            {winerSide}
           </span>
-        </h2>
-        <CountdownTimer endsAt={endsAt} />
-      </div>
+        </h3>
+      ) : (
+        <div className="flex items-center justify-between w-full">
+          <h2 className={`text-2xl font-semibold capitalize`}>
+            <span
+              className={` ${
+                debateStatus === "running" ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {debateStatus}
+            </span>
+          </h2>
+          <CountdownTimer endsAt={endsAt} />
+        </div>
+      )}
     </div>
   );
 };

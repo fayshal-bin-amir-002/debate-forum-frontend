@@ -1,8 +1,8 @@
+import { DebateDetails } from "@/types/debate";
 import React from "react";
-import { DebateDetailsClosed } from "@/types/debate";
 
 interface ScoreBoardProps {
-  data: DebateDetailsClosed;
+  data: DebateDetails;
 }
 
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ data }) => {
