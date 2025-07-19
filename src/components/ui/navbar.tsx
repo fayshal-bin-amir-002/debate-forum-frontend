@@ -157,15 +157,21 @@ export const Header = ({ session }: { session: IUserProps | null }) => {
                   ) : (
                     <DropdownMenu>
                       <DropdownMenuTrigger className="cursor-pointer">
-                        <Avatar>
-                          <AvatarImage
-                            src={
-                              session?.user?.image ||
-                              "https://github.com/shadcn.png"
-                            }
-                          />
-                          <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
+                        {session?.user?.image ? (
+                          <Avatar>
+                            <AvatarImage
+                              src={
+                                session?.user?.image ||
+                                "https://github.com/shadcn.png"
+                              }
+                            />
+                            <AvatarFallback>CN</AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-white font-semibold">
+                            {(session?.user?.name as string)[0]}
+                          </div>
+                        )}
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="h-auto">
                         <DropdownMenuLabel className="flex flex-col gap-0.5">

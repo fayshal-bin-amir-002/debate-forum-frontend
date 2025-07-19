@@ -39,13 +39,19 @@ const DebateDetailsModal: React.FC<DebateDetailsModalProps> = ({
         <div className="grid gap-6 py-4">
           {/* Author Info */}
           <div className="flex items-center gap-3">
-            <Image
-              src={debate?.authorImage || "https://github.com/shadcn.png"}
-              alt={debate.authorName}
-              width={40}
-              height={40}
-              className="rounded-full"
-            />
+            {debate?.authorImage ? (
+              <Image
+                src={debate?.authorImage}
+                alt="user"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+            ) : (
+              <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-white font-semibold">
+                {debate?.authorName[0]}
+              </div>
+            )}
             <div>
               <p className="font-medium">{debate.authorName}</p>
               <p className="text-xs text-muted-foreground">

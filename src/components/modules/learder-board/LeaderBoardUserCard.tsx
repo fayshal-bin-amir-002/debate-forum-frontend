@@ -22,13 +22,19 @@ const LeaderBoardUserCard = ({ user }: { user: LeaderboardUser }) => {
       )}
     >
       <div className="flex items-center gap-4">
-        <Image
-          src={user?.image || "https://github.com/shadcn.png"}
-          alt={user.name}
-          width={60}
-          height={60}
-          className="rounded-full border border-gray-300 dark:border-gray-700"
-        />
+        {user.image ? (
+          <Image
+            src={user.image}
+            alt="user"
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
+        ) : (
+          <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-white font-semibold">
+            {user.name[0]}
+          </div>
+        )}
         <div>
           <h2 className="font-semibold text-lg">{user.name}</h2>
           <p className="text-sm text-muted-foreground">{user.email}</p>
