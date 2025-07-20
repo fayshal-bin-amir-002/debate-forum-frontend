@@ -77,7 +77,7 @@ export function Footer() {
         </div>
 
         <div className="text-center mt-10 text-muted-foreground text-xs">
-          © {new Date().getFullYear()} DebateSphere. All rights reserved.
+          © {new Date().getFullYear()} Debate Forum. All rights reserved.
         </div>
       </Container>
     </footer>
