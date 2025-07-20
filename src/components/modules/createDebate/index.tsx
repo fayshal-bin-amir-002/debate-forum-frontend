@@ -33,7 +33,7 @@ const formSchema = z.object({
     .string()
     .trim()
     .min(1, { message: "Description is required" })
-    .max(200, { message: "Description can't exceed 200 characters" }),
+    .max(500, { message: "Description can't exceed 500 characters" }),
 });
 
 import { IUserProps } from "@/types/user";
@@ -59,7 +59,7 @@ const CreateDebateForm = ({ session }: { session: IUserProps | null }) => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const tags = values?.tags?.split(",");
+    const tags = values?.tags?.split(",").map((tag) => tag.trim());
 
     const payload = {
       ...values,
