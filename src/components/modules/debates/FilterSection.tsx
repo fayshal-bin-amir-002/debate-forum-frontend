@@ -32,13 +32,13 @@ const FilterSection = ({
         placeholder="Search debates by title, tag, or category..."
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        className="border border-gray-300 rounded px-4 py-2 w-full md:max-w-md"
+        className="border border-gray-300 dark:border-gray-600 rounded px-4 py-2 w-full md:max-w-md bg-white dark:bg-gray-800 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
       />
 
       <select
         value={sortBy}
         onChange={(e) => setSortBy(e.target.value as any)}
-        className="border border-gray-300 rounded px-4 py-2 w-full md:max-w-xs"
+        className="border border-gray-300 dark:border-gray-600 rounded px-4 py-2 w-full md:max-w-xs bg-white dark:bg-gray-800 text-black dark:text-white"
       >
         <option value="all">All (default newest)</option>
         <option value="newest">Newest</option>
